@@ -78,8 +78,22 @@
 
 		let container = document.createElement('div');
 		let cityPara = document.createElement('p');
+		cityPara.setAttribute('class','city');
+		cityPara.textContent = state.city;
 		let conditionsPara = document.createElement('p');
+//		conditionsPara.textContent = state.degCInt + '\u00B0 C / ' + state.degFInt + '\u00B0 F';
+		conditionsPara.textContent = `${state.degCInt}\u00B0 C / ${state.degFInt}\u00B0 F`;
 		let iconImage = document.createElement('img');
+		iconImage.setAttribute('src', state.icon);
+		iconImage.setAttribute('alt', state.condition);
+		conditionsPara.appendChild(iconImage);
+		container.appendChild(cityPara);
+		container.appendChild(conditionsPara);
+		if (document.querySelector('.conditions div')) {
+			into.replaceChild(container, document.querySelector('.conditions div'));
+		} else {
+			into.appendChild(container);
+		}
 
 		updateActivityList();
 	}
@@ -152,15 +166,25 @@
 
 		let activitiesContainer = document.createElement('div');
 		let list = document.createElement('ul');
-		state.activities.forEach(function() {
+		state.activities.forEach(function(activity,index) {
 			let listItem = document.createElement('li');
+			listItem.setAttribute('key', index);
+			listItem.textContent = activity;
+			list.appendChild(listItem);
 		});
+		activitiesContainer.appendChild(list);
+		if (document.querySelector('.activities div')) {
+			into.replaceChild(activitiesContainer, document.querySelector('.activities div'));
+		} else {
+			into.appendChild(activitiesContainer);
+		}
 
 		$('.results').slideDown(300);
 	}
 
 	// handle ajax failure
 	function updateUIFailure() {
-		$(".conditions").text("Weather information unavailable");
+//		$(".conditions").text("Weather information unavailable");
+		document.querySelector(".conditions").textContent = "Weather information unavailable";
 	}
 })();
